@@ -1,37 +1,53 @@
 #!/bin/bash -x
 
 # constants
-HEAD=1
-TAIL=0
-LIMIT=150
+LIMIT=100
 
 # variable
-headCount=0
-tailCount=0
-totalCount=0
+hh=0
+ht=0
+th=0
+tt=0
+flag=0
 
 declare -A result
 
-while [ $totalCount -lt $LIMIT ]
+while [ $flag -lt $LIMIT ]
 do
-	flag=$((RANDOM%2))
-	if [ $flag -eq $HEAD ]
+	flip1=$((RANDOM%2))
+	flip2=$((RANDOM%2))
+	if [ $flip1 -eq 1 ] && [ $flip2 -eq 1 ]
 	then
-		let headCount++
+		let hh++
+
+	elif [ $flip1 -eq 1 ] && [ $flip2 -eq 0 ]
+	then 
+		let ht++
+
+	elif [ $flip1 -eq 0 ] && [ $flip2 -eq 1 ]
+	then
+		let th++
 
 	else
-		let tailCount++
+		let tt++
 
 	fi
-	let totalCount++
+	let flag++
 done
 
-headPercentage=`echo $headCount $LIMIT | awk '{h=$1/$2*100} {print h}'`
-tailPercentage=`echo $tailCount $LIMIT | awk '{t=$1/$2*100} {print t}'`
+hhPercentage=`echo $hh $LIMIT | awk '{hh=$1/$2*100} {print hh}'`
+htPercentage=`echo $ht $LIMIT | awk '{ht=$1/$2*100} {print ht}'`
+thPercentage=`echo $th $LIMIT | awk '{th=$1/$2*100} {print th}'`
+ttPercentage=`echo $tt $LIMIT | awk '{tt=$1/$2*100} {print tt}'`
 
-result[h]=$headPercentage
-result[t]=$tailPercentage
+result[hh]=$hhPercentage
+result[ht]=$htPercentage
+result[th]=$thPercentage
+result[tt]=$ttPercentage
+
 echo ${result[@]} 
 
-echo "Head percentage $headPercentage%" 
-echo "Tail percentage $tailPercentage%"
+echo "Combination of HH is $hhPercentage%"
+echo "Combination of HT is $htPercentage%"
+echo "Combination of TH is $thPercentage%"
+echo "Combination of TT is $ttPercentage%"
